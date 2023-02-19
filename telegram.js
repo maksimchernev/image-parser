@@ -59,82 +59,85 @@ let data
 
 bot.on('message', async (msg) => {
     //console.log(msg)
-    if (!msg.text && !msg.document) {
-        return bot.sendMessage(msg.chat.id, `Неизвестный формат`)
-    }
-    if (msg.text) {
-        let re = /\s*(?:;|,|\n|$)\s*/
-        data = msg.text.split(re)
-    } else if (msg.document) {
-        const fileId = msg.document.file_id;
-        // an api request to get the "file directory" (file path)
-        const res = await axios.get(
-        `https://api.telegram.org/bot${process.env.TG_KEY}/getFile?file_id=${fileId}`
-        );
-        // extract the file path
-        console.log('res', res.data.result.file_path)
-        const filePath = res.data.result.file_path;
+    if (msg.text !== '/start') {
 
-        // now that we've "file path" we can generate the download link
-        const downloadURL = 
-        `https://api.telegram.org/file/bot${process.env.TG_KEY}/${filePath}`;
-        const format = JSON.stringify(filePath).slice(filePath.indexOf('.')+2,-1)
-        if (format != 'csv') {
-            return bot.sendMessage(msg.chat.id, `Неизвестный формат`)
-        }
-        let file = await download(downloadURL, `./doc.${format}`)
-        data = fs.readFileSync(file, "utf8").split(/\r\n|\n/).filter(item => item != 'Артикул').map(item => item.trim());        
-    } 
-    bot.sendMessage(msg.chat.id, `Выберите сайт для парсинга изображений`, {
-        reply_markup: {
-          inline_keyboard: [
-            [
-              {
-                text: 'Transistor.ru',
-                callback_data: 'Transistor.ru'
-              },
-              {
-                text: 'Maytoni.ru',
-                callback_data: 'Maytoni.ru'
-              }
-            ], [
-              {
-                text: 'Novotech-shop.ru',
-                callback_data: 'Novotech-shop.ru'
-              },
-              {
-                text: '6063-light.com',
-                callback_data: '6063-light.com'
-              },
-            ],[
-              {
-                text: 'Donolux.ru: Системы освещения',
-                callback_data: 'Donolux.ru'
-              },
+      if (!msg.text && !msg.document) {
+          return bot.sendMessage(msg.chat.id, `Неизвестный формат`)
+      }
+      if (msg.text) {
+          let re = /\s*(?:;|,|\n|$)\s*/
+          data = msg.text.split(re)
+      } else if (msg.document) {
+          const fileId = msg.document.file_id;
+          // an api request to get the "file directory" (file path)
+          const res = await axios.get(
+          `https://api.telegram.org/bot${process.env.TG_KEY}/getFile?file_id=${fileId}`
+          );
+          // extract the file path
+          console.log('res', res.data.result.file_path)
+          const filePath = res.data.result.file_path;
+  
+          // now that we've "file path" we can generate the download link
+          const downloadURL = 
+          `https://api.telegram.org/file/bot${process.env.TG_KEY}/${filePath}`;
+          const format = JSON.stringify(filePath).slice(filePath.indexOf('.')+2,-1)
+          if (format != 'csv') {
+              return bot.sendMessage(msg.chat.id, `Неизвестный формат`)
+          }
+          let file = await download(downloadURL, `./doc.${format}`)
+          data = fs.readFileSync(file, "utf8").split(/\r\n|\n/).filter(item => item != 'Артикул').map(item => item.trim());        
+      } 
+      bot.sendMessage(msg.chat.id, `Выберите сайт для парсинга изображений`, {
+          reply_markup: {
+            inline_keyboard: [
+              [
+                {
+                  text: 'Transistor.ru',
+                  callback_data: 'Transistor.ru'
+                },
+                {
+                  text: 'Maytoni.ru',
+                  callback_data: 'Maytoni.ru'
+                }
+              ], [
+                {
+                  text: 'Novotech-shop.ru',
+                  callback_data: 'Novotech-shop.ru'
+                },
+                {
+                  text: '6063-light.com',
+                  callback_data: '6063-light.com'
+                },
+              ],[
+                {
+                  text: 'Donolux.ru: Системы освещения',
+                  callback_data: 'Donolux.ru'
+                },
+              ]
+              ,[
+                {
+                  text: 'Donolux.ru: Весь каталог',
+                  callback_data: 'Donolux.ru extended'
+                },
+                {
+                  text: 'Swgshop.ru',
+                  callback_data: 'Swgshop.ru'
+                }
+              ]
+              ,[
+                {
+                  text: 'Artelamp.ru',
+                  callback_data: 'Artelamp.ru'
+                },
+                {
+                  text: 'Technolight.ru',
+                  callback_data: 'Technolight.ru'
+                }
+              ]
             ]
-            ,[
-              {
-                text: 'Donolux.ru: Весь каталог',
-                callback_data: 'Donolux.ru extended'
-              },
-              {
-                text: 'Swgshop.ru',
-                callback_data: 'Swgshop.ru'
-              }
-            ]
-            ,[
-              {
-                text: 'Artelamp.ru',
-                callback_data: 'Artelamp.ru'
-              },
-              {
-                text: 'Technolight.ru',
-                callback_data: 'Technolight.ru'
-              }
-            ]
-          ]
-        }
-    });
+          }
+      });
+    }
 })
 
 bot.on("polling_error", console.log);
