@@ -47,7 +47,7 @@ const checkPermission = (msg) => {
 bot.onText(/\/start/, (msg) => {
     let {allowedPerson, allowedChat} = checkPermission(msg)
     if (allowedChat && allowedPerson) {
-        bot.sendMessage(msg.chat.id, 'Введите значения артикулов в сообщении или отправьте в файле формата .csv или .json. Далее выберите необходимый для парсинга вебсайт.')
+        bot.sendMessage(msg.chat.id, 'Введите значения артикулов в сообщении или отправьте в файле формата .csv. Далее выберите необходимый для парсинга вебсайт.')
         
     }
 });
@@ -150,14 +150,14 @@ bot.on('callback_query', async (query) => {
       console.log('data', data)
       let articuls
       if(query.data == 'Transistor.ru') {    
-          bot.sendMessage(id,"Ожидание... 3 минуты");
+          bot.sendMessage(id,"Transistor.ru. Ожидание... 3 минуты");
           articuls = await parseTransistorRu(data)
           if (!data) {
             bot.sendMessage(id,"ошибка, возможно вы нажали 2жды");
             return
           }
       } else if (query.data == 'Maytoni.ru') {
-          bot.sendMessage(id,"Ожидание... 3 минуты");
+          bot.sendMessage(id,"Maytoni.ru. Ожидание... 3 минуты");
           articuls = await parseMaytoniRu(data)
           if (!data) {
             bot.sendMessage(id,"ошибка, возможно вы нажали 2жды");
@@ -165,49 +165,49 @@ bot.on('callback_query', async (query) => {
           }
           
       } else if (query.data == 'Novotech-shop.ru') {
-          bot.sendMessage(id,"Ожидание... 3 минуты");
+          bot.sendMessage(id,"Novotech-shop.ru. Ожидание... 3 минуты");
           articuls = await parseNovotechShopRu(data)
           if (!data) {
             bot.sendMessage(id,"ошибка, возможно вы нажали 2жды");
             return
           }
       } else if (query.data == 'Donolux.ru') {
-        bot.sendMessage(id,"Ожидание... 3 минуты");
+        bot.sendMessage(id,"Donolux.ru: Системы освещения. Ожидание... 3 минуты");
         articuls = await parseDonoluxRu(data, 'https://donolux.ru/produktsiya/sistemyi-osvescheniya')
         if (!data) {
           bot.sendMessage(id,"ошибка, возможно вы нажали 2жды");
           return
         }
       } else if (query.data == 'Donolux.ru extended') {
-        bot.sendMessage(id,"Ожидание... 20 минут");
+        bot.sendMessage(id,"Donolux.ru: Весь каталог. Ожидание... 20 минут");
         articuls = await parseDonoluxRu(data, 'https://donolux.ru/produktsiya')
         if (!data) {
           bot.sendMessage(id,"ошибка, возможно вы нажали 2жды");
           return
         }
       } else if (query.data == '6063-light.com') {
-        bot.sendMessage(id,"Ожидание... 3 минуты");
+        bot.sendMessage(id,"6063-light.com. Ожидание... 3 минуты");
         articuls = await parse6063(data)
         if (!data) {
             bot.sendMessage(id,"ошибка, возможно вы нажали 2жды");
             return
         }
       } else if (query.data == 'Swgshop.ru') {
-        bot.sendMessage(id,"Ожидание... 3 минуты");
+        bot.sendMessage(id,"Swgshop.ru. Ожидание... 3 минуты");
         articuls = await parseSWG(data)
         if (!data) {
             bot.sendMessage(id,"ошибка, возможно вы нажали 2жды");
             return
         }
       } else if (query.data === 'Artelamp.ru') {
-        bot.sendMessage(id,"Ожидание... 3 минуты");
+        bot.sendMessage(id,"Artelamp.ru. Ожидание... 3 минуты");
         articuls = await parseArtelamp(data)
         if (!data) {
             bot.sendMessage(id,"ошибка, возможно вы нажали 2жды");
             return
         }
       } else if (query.data === 'Technolight.ru') {
-        bot.sendMessage(id,"Ожидание... 3 минуты");
+        bot.sendMessage(id,"Technolight.ru. Ожидание... 3 минуты");
         articuls = await parseTechnolight(data)
         if (!data) {
             bot.sendMessage(id,"ошибка, возможно вы нажали 2жды");
