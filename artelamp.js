@@ -67,10 +67,11 @@ const parseArtelamp = async(articulsToBeFound) => {
         console.log('linksLength', linksLength)
         // Перебор и запись всех статей на выбранной странице
         for (let i = 0; i < linksLength && !foundAll; i++) {
-          let articulOnPage = links[i].getElementsByClassName("element")[0].getElementsByClassName('the_content')[0].getElementsByClassName('article')[0].getElementsByTagName('a')[0].innerHTML
+          let articulContainer = links[i].getElementsByClassName("element")[0].getElementsByClassName('the_content')[0].getElementsByClassName('article')[0].getElementsByTagName('a')
+          let articulOnPage = articulContainer[articulContainer.length-1].innerHTML
           //let type = links[i].getElementsByClassName("ext")[0].getElementsByClassName("type")[0].getElementsByTagName('span')[0].innerHTML
           console.log('articulOnPage', articulOnPage)
-          let relLink = links[i].getElementsByClassName("element")[0].getElementsByClassName('the_content')[0].getElementsByClassName('article')[0].getElementsByTagName('a')[0].getAttribute("href")
+          let relLink = articulContainer[articulContainer.length-1].getAttribute("href")
           // Превращение ссылок в абсолютные
           let itemLink = relLink.replace("/", "https://artelamp.ru/");
           let {imagesData, arts} = await parseItem(article, articuls, articulOnPage, itemLink)
