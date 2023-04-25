@@ -32,9 +32,11 @@ const parseItem = async(article, articuls, articulOnPage, itemLink) => {
       const imgUrlsForWP = []
 
       for (let i = 0; i<slider.length; i++) {
-          let url = slider[i].getElementsByTagName('img')[0].getAttribute("src")
-          let urlAbs = url.replace("/", "https://artelamp.ru/");
-          imgUrlsForWP.push(urlAbs)
+          if (slider[i].getElementsByTagName('img')?.length){
+            let url = slider[i].getElementsByTagName('img')[0].getAttribute("src")
+            let urlAbs = url.replace("/", "https://artelamp.ru/");
+            imgUrlsForWP.push(urlAbs)
+          }
       }
       imagesData = imageDataGenerator((article).toString(), imgUrlsForWP)
       arts = arts.filter((articul)=> {
