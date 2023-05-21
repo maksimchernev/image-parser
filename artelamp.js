@@ -38,6 +38,7 @@ const parseItem = async(article, articuls, articulOnPage, itemLink) => {
             imgUrlsForWP.push(urlAbs)
           }
       }
+      console.log('(article).toString(), imgUrlsForWP', (article).toString(), imgUrlsForWP);
       imagesData = imageDataGenerator((article).toString(), imgUrlsForWP)
       arts = arts.filter((articul)=> {
           return articul != article
@@ -78,11 +79,12 @@ const parseArtelamp = async(articulsToBeFound) => {
           let itemLink = relLink.replace("/", "https://artelamp.ru/");
           let {imagesData, arts} = await parseItem(article, articuls, articulOnPage, itemLink)
           console.log('imagesData', imagesData)
-          imageDataArr = imageDataArr.concat(imagesData)
-          articuls = arts
-            console.log('imageDataArr', imageDataArr)
-          if (articuls.length == 0) {
-            foundAll = true
+          if (imagesData) {
+            imageDataArr = imageDataArr.concat(imagesData)
+            articuls = arts
+            if (articuls.length == 0) {
+              foundAll = true
+            }
           }
           await wait(100)   
         }
