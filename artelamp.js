@@ -32,7 +32,7 @@ const parseItem = async(article, articuls, articulOnPage, itemLink) => {
       const imgUrlsForWP = []
 
       for (let i = 0; i<slider.length; i++) {
-          if (slider[i].getElementsByTagName('img')?.length){
+          if (!slider[i].getElementsByTagName('div')?.length){
             let url = slider[i].getElementsByTagName('img')[0].getAttribute("src")
             let urlAbs = url.replace("/", "https://artelamp.ru/");
             imgUrlsForWP.push(urlAbs)
@@ -78,12 +78,13 @@ const parseArtelamp = async(articulsToBeFound) => {
           let itemLink = relLink.replace("/", "https://artelamp.ru/");
           let {imagesData, arts} = await parseItem(article, articuls, articulOnPage, itemLink)
           console.log('imagesData', imagesData)
-          imageDataArr = imageDataArr.concat(imagesData)
-          articuls = arts
-            console.log('imageDataArr', imageDataArr)
+	  if (imagesData) {
+          	imageDataArr = imageDataArr.concat(imagesData)
+         	articuls = arts
+	  }
           if (articuls.length == 0) {
-            foundAll = true
-          }
+          	foundAll = true
+  	  }
           await wait(100)   
         }
     }
