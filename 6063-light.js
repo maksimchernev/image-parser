@@ -90,11 +90,22 @@ const parseItem = async (articuls, articulOnPage, itemLink) => {
         let urlAbs = url.replace("/", "https://6063-light.com/");
         imgUrlsForWP.push(urlAbs);
       }
-      imagesData = imageDataGenerator(atrAnotherTry.toString(), imgUrlsForWP);
-      arts = arts.filter((articul) => {
-        return articul != atrAnotherTry;
-      });
-      console.log("articuls", articuls);
+      if (arts.includes(atrAnotherTry.slice(1, atrAnotherTry.length))) {
+        imagesData = imageDataGenerator(
+          atrAnotherTry.slice(1, atrAnotherTry.length).toString(),
+          imgUrlsForWP
+        );
+        arts = arts.filter((articul) => {
+          return articul != atrAnotherTry.slice(1, atrAnotherTry.length);
+        });
+        console.log("articuls", articuls);
+      } else {
+        imagesData = imageDataGenerator(atrAnotherTry.toString(), imgUrlsForWP);
+        arts = arts.filter((articul) => {
+          return articul != atrAnotherTry;
+        });
+        console.log("articuls", articuls);
+      }
     }
   }
   return { imagesData, arts };
