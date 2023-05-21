@@ -126,36 +126,38 @@ const parse6063 = async (articulsToBeFound) => {
     // Определение количества ссылок на странице, потому что оно у них не всегда фиксированное. Это значение понадобится в цикле ниже
     let links = document
       .getElementsByClassName("line oh results")[0]
-      .getElementsByClassName("catalog_item");
-    let linksLength = links.length;
-    console.log("linksLength", linksLength);
-    // Перебор и запись всех статей на выбранной странице
-    for (let i = 0; i < linksLength && !foundAll; i++) {
-      let articulOnPage = links[i]
-        .getElementsByClassName("ext")[0]
-        .getElementsByClassName("article")[0]
-        .getElementsByTagName("span")[0].innerHTML;
-      //let type = links[i].getElementsByClassName("ext")[0].getElementsByClassName("type")[0].getElementsByTagName('span')[0].innerHTML
-      console.log("articulOnPage", articulOnPage);
-      let relLink = links[i]
-        .getElementsByClassName("oh rel")[0]
-        .getElementsByClassName("cl fl")[0]
-        .getElementsByTagName("a")[0]
-        .getAttribute("href");
-      // Превращение ссылок в абсолютные
-      let itemLink = relLink.replace("/", "https://6063-light.com/");
-      let { imagesData, arts } = await parseItem(
-        articuls,
-        articulOnPage,
-        itemLink
-      );
-      imageDataArr = imageDataArr.concat(imagesData);
-      articuls = arts;
+      ?.getElementsByClassName("catalog_item");
+    if (links) {
+      let linksLength = links.length;
+      console.log("linksLength", linksLength);
+      // Перебор и запись всех статей на выбранной странице
+      for (let i = 0; i < linksLength && !foundAll; i++) {
+        let articulOnPage = links[i]
+          .getElementsByClassName("ext")[0]
+          .getElementsByClassName("article")[0]
+          .getElementsByTagName("span")[0].innerHTML;
+        //let type = links[i].getElementsByClassName("ext")[0].getElementsByClassName("type")[0].getElementsByTagName('span')[0].innerHTML
+        console.log("articulOnPage", articulOnPage);
+        let relLink = links[i]
+          .getElementsByClassName("oh rel")[0]
+          .getElementsByClassName("cl fl")[0]
+          .getElementsByTagName("a")[0]
+          .getAttribute("href");
+        // Превращение ссылок в абсолютные
+        let itemLink = relLink.replace("/", "https://6063-light.com/");
+        let { imagesData, arts } = await parseItem(
+          articuls,
+          articulOnPage,
+          itemLink
+        );
+        imageDataArr = imageDataArr.concat(imagesData);
+        articuls = arts;
 
-      if (articuls.length == 0) {
-        foundAll = true;
+        if (articuls.length == 0) {
+          foundAll = true;
+        }
+        await wait(100);
       }
-      await wait(100);
     }
   }
 
