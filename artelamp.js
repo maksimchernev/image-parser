@@ -42,7 +42,9 @@ const parseItem = async (article, articuls, articulOnPage, itemLink) => {
           let urlAbs = url
             .replace("/", "https://artelamp.ru/")
             .replace("small", "big");
-          imgUrlsForWP.push(urlAbs);
+          if (!urlAbs.includes("i.imgur.com")) {
+            imgUrlsForWP.push(urlAbs);
+          }
         }
       }
       console.log(
