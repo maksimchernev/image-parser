@@ -39,7 +39,9 @@ const parseItem = async (article, articuls, articulOnPage, itemLink) => {
           let url = slider[i]
             .getElementsByTagName("img")[0]
             .getAttribute("src");
-          let urlAbs = url.replace("/", "https://artelamp.ru/");
+          let urlAbs = url
+            .replace("/", "https://artelamp.ru/")
+            .replace("small", "big");
           imgUrlsForWP.push(urlAbs);
         }
       }
